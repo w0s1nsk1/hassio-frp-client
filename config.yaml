@@ -1,6 +1,6 @@
 ---
 name: "Hass.io FRP client"
-version: "0.0.5"
+version: "0.0.6"
 slug: "hassio-frp-client"
 description: A fast reverse proxy client for Hass.io to help you expose a home assistant behind a NAT or firewall to the internet.
 url: https://github.com/w0s1nsk1/hassio-frp-client
