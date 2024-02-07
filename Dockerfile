@@ -20,6 +20,7 @@ COPY rootfs /
 # Setup base
 RUN apk add --no-cache \
     wget=1.21.4-r0
+    tar
 
 RUN wget "https://github.com/fatedier/frp/releases/download/v${FRP_VERSION}/frp_${FRP_VERSION}_linux_${BUILD_ARCH}.tar.gz" &&
     tar xzvf frp_${FRP_VERSION}_linux_${BUILD_ARCH}.tar.gz -C /tmp &&
