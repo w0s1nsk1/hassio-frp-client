@@ -1,15 +1,4 @@
 ARG BUILD_FROM=ghcr.io/hassio-addons/base:15.0.6
-# hadolint ignore=DL3006
-FROM ${BUILD_FROM}
-
-# Copy root filesystem
-COPY rootfs /
-
-# Setup base
-RUN apk add --no-cache \
-    coreutils=9.4-r2 \
-    wget=1.21.4-r0
-
 # Build arguments
 ARG BUILD_ARCH
 ARG BUILD_DATE
@@ -18,7 +7,25 @@ ARG BUILD_NAME
 ARG BUILD_REF
 ARG BUILD_REPOSITORY
 ARG BUILD_VERSION
+
+# FRP
 ARG FRP_VERSION
+
+# hadolint ignore=DL3006
+FROM ${BUILD_FROM}
+
+# Copy root filesystem
+COPY rootfs /
+
+# Setup base
+RUN apk add --no-cache \
+    wget=1.21.4-r0
+
+RUN wget "https://github.com/fatedier/frp/releases/download/v${FRP_VERSION}/frp_${FRP_VERSION}_linux_${BUILD_ARCH}.tar.gz" &&
+    tar xzvf frp_${FRP_VERSION}_linux_${BUILD_ARCH}.tar.gz -C /tmp &&
+    mv /tmp/frp_${FRP_VERSION}_linux_${BUILD_ARCH}/frps /usr/bin/frps &&
+    mv /tmp/frp_${FRP_VERSION}_linux_${BUILD_ARCH}/frpc /usr/bin/frpc
+
 
 # Labels
 LABEL \

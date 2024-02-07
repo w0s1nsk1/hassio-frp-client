@@ -1,0 +1,30 @@
+#!/command/with-contenv bashio
+# shellcheck shell=bash
+# ==============================================================================
+# Home Assistant Community Add-on: Example
+# Runs example1 script
+# ==============================================================================
+
+bashio::log.info "Starting frp client..."
+
+ADDON_PATH='/share/frp'
+CONFIG_PATH='/share/frp/frpc.ini'
+
+mkdir -p $ADDON_PATH || bashio::exit.nok "Could not create ${ADDON_PATH} folder"
+
+if ! bashio::fs.file_exists $CONFIG_PATH; then
+    bashio::fatal "Can't find ${CONFIG_PATH}"
+    bashio::exit.nok
+fi
+
+log_file=$(sed -n "/^[ \t]*\[common\]/,/\[/s/^[ \t]*log_file[ \t]*=[ \t]*//p" ${CONFIG_PATH})
+
+if [[ ! -n "${log_file}" ]]; then
+    bashio::log.info 'Please specify a path to log file in config file'
+    bashio::exit.nok
+fi
+
+main() {
+    frpc -c /share/frp/frpc.ini
+}
+main "$@"
